@@ -12,13 +12,14 @@
   .header-icon { font-size: 1.4rem; }
   .header-title { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.5px; }
   .header-date { font-size: 0.78rem; color: rgba(255,255,255,0.6); }
-  .categories { display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px; scrollbar-width: none; background: white; border-bottom: 1px solid #e8e8e8; }
+  .categories { display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px; scrollbar-width: none; background: white; border-bottom: 1px solid #e8e8e8; position: sticky; top: 72px; z-index: 9; }
   .categories::-webkit-scrollbar { display: none; }
-  .cat-btn { flex-shrink: 0; padding: 5px 14px; border-radius: 20px; border: 1.5px solid #ddd; background: white; font-size: 0.78rem; color: #555; cursor: pointer; font-weight: 500; }
+  .cat-btn { flex-shrink: 0; padding: 5px 14px; border-radius: 20px; border: 1.5px solid #ddd; background: white; font-size: 0.78rem; color: #555; cursor: pointer; font-weight: 500; transition: all 0.2s; }
   .cat-btn.active { background: #0f3460; color: white; border-color: #0f3460; }
   .news-list { padding: 12px 16px; max-width: 640px; margin: 0 auto; }
-  .news-card { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.15s, box-shadow 0.15s; }
+  .news-card { display: block; text-decoration: none; background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.15s, box-shadow 0.15s; }
   .news-card:active { transform: scale(0.98); }
+  .news-card.hidden { display: none; }
   .card-body { padding: 16px; }
   .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
   .category-tag { font-size: 0.68rem; font-weight: 700; padding: 3px 9px; border-radius: 10px; letter-spacing: 0.3px; }
@@ -32,8 +33,10 @@
   .card-num { font-size: 0.72rem; color: #bbb; font-weight: 600; }
   .card-title { font-size: 0.98rem; font-weight: 700; color: #1a1a2e; line-height: 1.4; margin-bottom: 6px; }
   .card-desc { font-size: 0.83rem; color: #666; line-height: 1.55; }
-  .card-footer { padding: 10px 16px; border-top: 1px solid #f5f5f5; display: flex; align-items: center; gap: 6px; }
+  .card-footer { padding: 10px 16px; border-top: 1px solid #f5f5f5; display: flex; align-items: center; justify-content: space-between; }
   .card-source { font-size: 0.72rem; color: #aaa; }
+  .card-arrow { font-size: 0.8rem; color: #ccc; }
+  .no-results { text-align: center; padding: 40px 16px; color: #aaa; font-size: 0.9rem; display: none; }
   .footer { text-align: center; padding: 24px 16px; color: #aaa; font-size: 0.75rem; }
 </style>
 </head>
@@ -43,104 +46,130 @@
   <div class="header-date">2026年4月2日 のニュースダイジェスト</div>
 </div>
 <div class="categories">
-  <div class="cat-btn active">すべて</div>
-  <div class="cat-btn">経済</div>
-  <div class="cat-btn">政治</div>
-  <div class="cat-btn">社会</div>
-  <div class="cat-btn">技術</div>
-  <div class="cat-btn">国際</div>
+  <button class="cat-btn active" data-filter="all">すべて</button>
+  <button class="cat-btn" data-filter="economy">経済</button>
+  <button class="cat-btn" data-filter="politics">政治</button>
+  <button class="cat-btn" data-filter="society">社会</button>
+  <button class="cat-btn" data-filter="tech">技術</button>
+  <button class="cat-btn" data-filter="sports">スポーツ</button>
+  <button class="cat-btn" data-filter="world">国際</button>
 </div>
-<div class="news-list">
-  <div class="news-card">
+<div class="news-list" id="newsList">
+
+  <a class="news-card" href="https://www.nikkei.com/" target="_blank" rel="noopener" data-category="economy">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#01</span></div>
       <div class="card-title">日経平均株価が1,276円安、一時1,400円超の下げ幅</div>
       <div class="card-desc">東京株式市場で日経平均株価が反落し、終値は前日比1,276円（2.38%）安の52,463円。トランプ米大統領の演説を受けてイランとの軍事衝突収束期待が後退し、午後には下げ幅が一時1,400円超に拡大。銀行・製造業など景気敏感株が軒並み売られた。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.nikkei.com/economy/economy/" target="_blank" rel="noopener" data-category="economy">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#02</span></div>
       <div class="card-title">フラット35金利が4月2.49%に、現行制度で過去最大の上げ幅</div>
       <div class="card-desc">住宅金融支援機構のフラット35（35年固定）の4月適用金利が2.49%となり、現行制度における過去最大の上げ幅を記録。日銀の金融政策正常化に伴う長期金利上昇が住宅ローン市場にも波及している。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.japantimes.co.jp/business/2026/04/02/economy/boj-rate-hike-april/" target="_blank" rel="noopener" data-category="economy">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#03</span></div>
-      <div class="card-title">財務省：2月の税収5.1%増、企業業績好調が下支え</div>
-      <div class="card-desc">財務省は2月の国の税収が前年同月比5.1%増だったと発表。法人税収の伸びが主因で、企業の堅調な業績が税収増に寄与した。通年での税収増も視野に入ってきた。</div>
+      <div class="card-title">日銀、4月にも追加利上げの可能性 元チーフエコノミストが言及</div>
+      <div class="card-desc">元日銀チーフエコノミストが4月利上げの可能性を示唆。中東情勢悪化によるインフレ上振れリスクが追い打ちとなっており、日銀は4月28日の政策決定会合で政策金利（現行0.75%）の引き上げを判断する。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 財務省発表</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 The Japan Times</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www3.nhk.or.jp/news/" target="_blank" rel="noopener" data-category="politics">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-politics">政治</span><span class="card-num">#04</span></div>
       <div class="card-title">自転車の交通反則切符制度が4月1日から本格運用開始</div>
-      <div class="card-desc">自転車の信号無視や一時不停止などを対象とした交通反則切符（青切符）制度が4月1日から施行された。林官房長官は「安全運転に努めてほしい」と国民に呼びかけた。</div>
+      <div class="card-desc">自転車の信号無視や一時不停止などを対象とした交通反則切符（青切符）制度が4月1日から施行された。林官房長官は「安全運転に努めてほしい」と国民に呼びかけた。悪質な違反者には反則金が課せられる。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 NHKニュース</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 NHKニュース</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.sankei.com/" target="_blank" rel="noopener" data-category="politics">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-politics">政治</span><span class="card-num">#05</span></div>
       <div class="card-title">自民党、国旗損壊罪創設を検討―PTが初会合</div>
       <div class="card-desc">自民党の岩屋毅外相は、国旗損壊罪創設を求める党プロジェクトチームの初会合で国旗尊重の必要性を強調しつつも、法整備には慎重姿勢を示した。野党からは表現の自由との兼ね合いを問題視する声も上がっている。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 産経新聞</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 産経新聞</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.asahi.com/" target="_blank" rel="noopener" data-category="politics">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-politics">政治</span><span class="card-num">#06</span></div>
       <div class="card-title">大阪都構想住民投票「府全域」案が波紋、維新市議団が反発</div>
-      <div class="card-desc">大阪都構想の住民投票について府全域を対象とする案が自維間で浮上し、維新市議団が反発。住民投票の実施範囲をめぐる攻防が激化している。</div>
+      <div class="card-desc">大阪都構想の住民投票について府全域を対象とする案が自民・維新間で浮上し、維新市議団が反発。住民投票の実施範囲をめぐる攻防が激化している。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 朝日新聞</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 朝日新聞</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.nikkei.com/article/DGXZQOUA272EN0X20C26A3000000/" target="_blank" rel="noopener" data-category="world">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-world">国際</span><span class="card-num">#07</span></div>
       <div class="card-title">トランプ関税1年、台湾の対米輸出が8割増―半導体強みに日韓を抜く</div>
-      <div class="card-desc">トランプ政権の関税措置から1年、台湾の対米輸出が約8割増加。半導体産業の競争力を背景に日韓を上回る伸びを示した。関税の影響は各国・地域によって明暗が分かれている。</div>
+      <div class="card-desc">トランプ政権の相互関税発動から1年、AI・半導体分野に強みを持つ台湾の対米輸出額が約8割増加し、日本や韓国を上回った。日本の製造業は「米国回帰」が道半ばの状況が続いている。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www3.nhk.or.jp/news/" target="_blank" rel="noopener" data-category="world">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-world">国際</span><span class="card-num">#08</span></div>
       <div class="card-title">イランがフィリピン船舶のホルムズ海峡通過を許可、両国外相が電話協議</div>
-      <div class="card-desc">イランがフィリピン船舶のホルムズ海峡通過を許可し、両国外相が電話協議を実施。中東の緊張が続く中、外交的解決に向けた動きとして注目を集めている。</div>
+      <div class="card-desc">イランがフィリピン船舶のホルムズ海峡通過を許可し、両国外相が電話協議を実施。日本の石油輸入の約93%がホルムズ海峡経由のため、中東情勢の動向を引き続き注視している。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 NHKニュース</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 NHKニュース</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.jiji.com/" target="_blank" rel="noopener" data-category="society">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-society">社会</span><span class="card-num">#09</span></div>
       <div class="card-title">はま寿司宮崎店で集団食中毒、21人がノロウイルス感染</div>
       <div class="card-desc">はま寿司の宮崎県内の店舗で集団食中毒が発生し、21人がノロウイルスへの感染が確認された。保健所が原因の詳細を調査中で、当該店舗は営業を停止している。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 時事ドットコム</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 時事ドットコム</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://news.yahoo.co.jp/categories/sports" target="_blank" rel="noopener" data-category="sports">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-sports">スポーツ</span><span class="card-num">#10</span></div>
       <div class="card-title">サッカー日本代表がイングランドに快勝、W杯北中米大会へ弾み</div>
       <div class="card-desc">サッカー日本代表が3月31日にロンドンで行われたイングランドとのテストマッチに快勝。この夏に開催されるFIFAワールドカップ北中米大会に向けて大きな弾みをつける結果となった。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 スポーツニュース各社</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 Yahoo!スポーツ</span><span class="card-arrow">›</span></div>
+  </a>
+
 </div>
+<div class="no-results" id="noResults">該当するカテゴリーのニュースはありません</div>
 <div class="footer">🤖 Claudeにより自動生成 | 2026-04-02</div>
+<script>
+  const buttons = document.querySelectorAll('.cat-btn');
+  const cards = document.querySelectorAll('.news-card');
+  const noResults = document.getElementById('noResults');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      let visible = 0;
+      cards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.classList.remove('hidden');
+          visible++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+      noResults.style.display = visible === 0 ? 'block' : 'none';
+    });
+  });
+</script>
 </body>
 </html>
