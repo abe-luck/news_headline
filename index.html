@@ -12,12 +12,15 @@
   .header-icon { font-size: 1.4rem; }
   .header-title { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.5px; }
   .header-date { font-size: 0.78rem; color: rgba(255,255,255,0.6); }
+  .section-label { font-size: 0.8rem; font-weight: 700; color: #555; padding: 16px 16px 6px; max-width: 640px; margin: 0 auto; letter-spacing: 0.5px; }
+  .section-label.ai-label { color: #7b1fa2; }
   .categories { display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px; scrollbar-width: none; background: white; border-bottom: 1px solid #e8e8e8; position: sticky; top: 72px; z-index: 9; }
   .categories::-webkit-scrollbar { display: none; }
   .cat-btn { flex-shrink: 0; padding: 5px 14px; border-radius: 20px; border: 1.5px solid #ddd; background: white; font-size: 0.78rem; color: #555; cursor: pointer; font-weight: 500; transition: all 0.2s; }
   .cat-btn.active { background: #0f3460; color: white; border-color: #0f3460; }
-  .news-list { padding: 12px 16px; max-width: 640px; margin: 0 auto; }
+  .news-list { padding: 4px 16px 12px; max-width: 640px; margin: 0 auto; }
   .news-card { display: block; text-decoration: none; background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.15s, box-shadow 0.15s; }
+  .news-card.ai-card { border-left: 3px solid #7b1fa2; }
   .news-card:active { transform: scale(0.98); }
   .news-card.hidden { display: none; }
   .card-body { padding: 16px; }
@@ -26,10 +29,11 @@
   .tag-economy { background: #fff3e0; color: #e65100; }
   .tag-politics { background: #e8f5e9; color: #2e7d32; }
   .tag-society { background: #e3f2fd; color: #1565c0; }
-  .tag-tech { background: #f3e5f5; color: #7b1fa2; }
+  .tag-tech { background: #f5f0ff; color: #6a0dad; }
   .tag-sports { background: #fce4ec; color: #c62828; }
   .tag-world { background: #e0f7fa; color: #00695c; }
   .tag-other { background: #f5f5f5; color: #616161; }
+  .tag-ai { background: #ede7f6; color: #4a148c; }
   .card-num { font-size: 0.72rem; color: #bbb; font-weight: 600; }
   .card-title { font-size: 0.98rem; font-weight: 700; color: #1a1a2e; line-height: 1.4; margin-bottom: 6px; }
   .card-desc { font-size: 0.83rem; color: #666; line-height: 1.55; }
@@ -53,97 +57,145 @@
   <button class="cat-btn" data-filter="tech">技術</button>
   <button class="cat-btn" data-filter="sports">スポーツ</button>
   <button class="cat-btn" data-filter="world">国際</button>
+  <button class="cat-btn" data-filter="ai">🤖 AI</button>
 </div>
+
+<div class="section-label">📰 今日のニュース</div>
 <div class="news-list" id="newsList">
 
-  <a class="news-card" href="https://www.nikkei.com/article/DGXZQOUB04BUY0U5A400C2000000/" target="_blank" rel="noopener" data-category="economy">
+  <a class="news-card" href="https://japantoday.com/category/business/update1-toyota-aims-to-import-u.s.-built-vehicles-to-japan-from-2026" target="_blank" rel="noopener" data-category="economy">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#01</span></div>
-      <div class="card-title">トランプ相互関税ショック — 日経平均・円相場に大きな波乱</div>
-      <div class="card-desc">トランプ大統領が全輸入品に一律10%のベースライン関税を発動。日経平均は一時急落し年初来安値を更新、円相場も乱高下。多くの国への高率関税は90日間停止されたが市場の不安定な状態は続く。</div>
+      <div class="card-title">トヨタ、米国製タンドラ・ハイランダーの日本販売を開始</div>
+      <div class="card-desc">トヨタ自動車は4月2日より、米国工場で生産したピックアップトラック「タンドラ」とSUV「ハイランダー」の日本国内販売を開始した。日米貿易摩擦緩和の一環として「逆輸入」方式を採用し、右ハンドル仕様に転換して投入。月販目標はタンドラ80台、ハイランダー40台。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span><span class="card-arrow">›</span></div>
+    <div class="card-footer"><span class="card-source">🔗 Japan Today / Automotive News</span><span class="card-arrow">›</span></div>
   </a>
 
-  <a class="news-card" href="https://www.nikkei.com/markets/worldidx/chart/nk225/" target="_blank" rel="noopener" data-category="economy">
+  <a class="news-card" href="https://www.nikkei.com/article/DGXZQOUB168JQ0W6A310C2000000/" target="_blank" rel="noopener" data-category="economy">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#02</span></div>
-      <div class="card-title">日銀、追加利上げ検討 — 政策金利1%到達を視野に</div>
-      <div class="card-desc">日銀の植田総裁は物価の上振れ・下振れリスクの双方を注視しつつ、次回会合での追加利上げを排除しないと発言。2026年内に政策金利が1.0%に達するとの見方が市場で広がっている。</div>
+      <div class="card-title">KDDI子会社で2,460億円の架空取引発覚、売上の99.7%が虚偽</div>
+      <div class="card-desc">KDDIの子会社ビッグローブ・ジー・プランが2017年度から9年間にわたり、広告代理事業で総額約2,460億円の架空循環取引を行っていたことが特別調査委員会の報告で判明。同事業売上の99.7%が架空で、約330億円が社外流出した可能性がある。</div>
     </div>
     <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span><span class="card-arrow">›</span></div>
   </a>
 
-  <a class="news-card" href="https://news.web.nhk/newsweb" target="_blank" rel="noopener" data-category="world">
+  <a class="news-card" href="https://www.jiji.com/jc/article?k=2026040300929&g=eco" target="_blank" rel="noopener" data-category="economy">
     <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-world">国際</span><span class="card-num">#03</span></div>
-      <div class="card-title">日仏首脳会談 — 「台湾海峡の平和と安定」を共同声明に明記</div>
-      <div class="card-desc">日本とフランスの首脳会談が行われ、共同声明に台湾海峡の平和と安定の重要性を明記。インド太平洋地域での安全保障協力強化でも合意し、欧州との連携深化を確認した。</div>
-    </div>
-    <div class="card-footer"><span class="card-source">🔗 NHKニュース</span><span class="card-arrow">›</span></div>
-  </a>
-
-  <a class="news-card" href="https://www.nikkei.com/news/category/politics/" target="_blank" rel="noopener" data-category="politics">
-    <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-politics">政治</span><span class="card-num">#04</span></div>
-      <div class="card-title">2026年度防衛費 — GDP比2%・9兆円超を確保へ向け予算審議</div>
-      <div class="card-desc">政府はGDP比2%に相当する9兆円超の防衛費確保を目指し予算審議を継続。与党が参院で過半数を持たない中、与野党の協議が続いており、今月中の成立を目指している。</div>
-    </div>
-    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span><span class="card-arrow">›</span></div>
-  </a>
-
-  <a class="news-card" href="https://news.web.nhk/newsweb/genre/politics" target="_blank" rel="noopener" data-category="politics">
-    <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-politics">政治</span><span class="card-num">#05</span></div>
-      <div class="card-title">京都府知事選挙 — 本日投票、新知事が決まる</div>
-      <div class="card-desc">任期満了に伴う京都府知事選挙が本日4月5日に投票日を迎えた。複数の候補が経済振興・観光政策・少子化対策などを争点に選挙戦を展開しており、即日開票される予定。</div>
-    </div>
-    <div class="card-footer"><span class="card-source">🔗 NHKニュース</span><span class="card-arrow">›</span></div>
-  </a>
-
-  <a class="news-card" href="https://www.chugoku-np.co.jp/articles/-/811751" target="_blank" rel="noopener" data-category="society">
-    <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-society">社会</span><span class="card-num">#06</span></div>
-      <div class="card-title">PFAS問題 — 広島・東広島市、住民血液から高濃度検出が続く</div>
-      <div class="card-desc">健康影響が指摘されるPFASが広島県東広島市で問題化して2年。自主検査した住民の血液からも依然として高濃度のPFASが検出されており、原因究明と対策が急務となっている。</div>
-    </div>
-    <div class="card-footer"><span class="card-source">🔗 中国新聞デジタル</span><span class="card-arrow">›</span></div>
-  </a>
-
-  <a class="news-card" href="https://www.nikkei.com/" target="_blank" rel="noopener" data-category="economy">
-    <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#07</span></div>
-      <div class="card-title">社債発行額が6年ぶり15兆円超え — ソフトバンクGが首位</div>
-      <div class="card-desc">2025年度の国内社債発行額が6年ぶりに15兆円の最高水準に達した。低金利環境を活用した資金調達が活発化しており、ソフトバンクグループが発行額首位となっている。</div>
-    </div>
-    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span><span class="card-arrow">›</span></div>
-  </a>
-
-  <a class="news-card" href="https://www.jiji.com/jc/archives?g=soc_archive_0" target="_blank" rel="noopener" data-category="society">
-    <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-society">社会</span><span class="card-num">#08</span></div>
-      <div class="card-title">未婚女性の6割超が「将来子供を望まない」 — 過去最高、少子化加速に懸念</div>
-      <div class="card-desc">ロート製薬の調査で、未婚女性の「将来子供が欲しくない」割合が2025年に6割を超え過去最高を記録。妊娠・出産・育児によるキャリア中断への不安が主な理由となっている。</div>
+      <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#03</span></div>
+      <div class="card-title">2026年春闘・第3回集計、全体賃上げ率5.09%で3年連続5%超を維持</div>
+      <div class="card-desc">連合が4月3日に発表した2026年春闘の第3回集計によると、賃上げ率の加重平均は5.09%と前年同時点を0.33ポイント下回ったが、5%超の高水準を維持した。中小企業（300人未満）も5.00%と前年並みを確保、トヨタ自動車は6年連続の満額回答を達成した。</div>
     </div>
     <div class="card-footer"><span class="card-source">🔗 時事ドットコム</span><span class="card-arrow">›</span></div>
   </a>
 
-  <a class="news-card" href="https://news.web.nhk/newsweb" target="_blank" rel="noopener" data-category="society">
+  <a class="news-card" href="https://www.policynews.jp/schedule/2026/4.html" target="_blank" rel="noopener" data-category="politics">
     <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-society">社会</span><span class="card-num">#09</span></div>
-      <div class="card-title">3月の気温が全国的に高温 — 気象庁発表、北日本と沖縄・奄美は少雨</div>
-      <div class="card-desc">気象庁は3月の天候まとめを発表。全国的に平均気温が平年を上回る高温となり、北日本と沖縄・奄美地方では少雨が続いた。4月も引き続き気温の高い状態が予想される。</div>
+      <div class="card-meta"><span class="category-tag tag-politics">政治</span><span class="card-num">#04</span></div>
+      <div class="card-title">2026年度本予算、4月11日に自然成立へ――防衛増税・共同親権など新制度が4月始動</div>
+      <div class="card-desc">令和8年度本予算は年度内成立を断念し、4月11日に自然成立する見込みとなった。4月1日からはたばこ税・法人税引き上げ（防衛財源）、改正民法（離婚後の共同親権）、改正道路交通法（自転車への青切符）など多数の新制度が一斉にスタートした。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 NHKニュース</span><span class="card-arrow">›</span></div>
+    <div class="card-footer"><span class="card-source">🔗 KSI政策ニュース.jp</span><span class="card-arrow">›</span></div>
   </a>
 
-  <a class="news-card" href="https://www.oricon.co.jp/news/2440035/full/" target="_blank" rel="noopener" data-category="other">
+  <a class="news-card" href="https://tokyointernationalmeetup.com/2026/04/01/japan-electricity-gas-bills-rising-april-2026/" target="_blank" rel="noopener" data-category="economy">
     <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-other">その他</span><span class="card-num">#10</span></div>
-      <div class="card-title">日テレ、24年ぶり土曜夜の新報道番組開始 — 「with MUSIC」は放送終了</div>
-      <div class="card-desc">日本テレビは4月改編として、土曜夜に24年ぶりとなる新報道番組の放送開始を発表。長寿音楽番組「with MUSIC」は幕を下ろし、「信じざるを得ないような報道番組を目指す」としている。</div>
+      <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#05</span></div>
+      <div class="card-title">電気・ガス代が4月から大幅値上がり――政府補助終了で10〜30%上昇</div>
+      <div class="card-desc">政府による電気・ガス料金の補助制度が3月末で終了し、4月1日から電気代が補助前比で10〜30%上昇した。物価高の長期化が続く中、家計への追加負担として影響が広がっており、低所得世帯向けの対応策を求める声も上がっている。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 ORICON NEWS</span><span class="card-arrow">›</span></div>
+    <div class="card-footer"><span class="card-source">🔗 Tokyo International Meetup / Nippon.com</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card" href="https://www.japantimes.co.jp/news/2026/04/03/japan/golden-week-travel-abroad-increase/" target="_blank" rel="noopener" data-category="society">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-society">社会</span><span class="card-num">#06</span></div>
+      <div class="card-title">ゴールデンウィーク海外旅行者、57万人超で前年比8.5%増――1人あたり支出は過去最高</div>
+      <div class="card-desc">JTBの調査によると、2026年のゴールデンウィーク（4月25日〜5月7日）に海外旅行を計画している人は約57万2,000人と前年比8.5%増になる見通し。1人あたりの平均旅行費用は32万9,000円と、比較可能な1996年以降で最高額となった。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 The Japan Times</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card" href="https://www.nippon.com/en/japan-data/h02744/" target="_blank" rel="noopener" data-category="society">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-society">社会</span><span class="card-num">#07</span></div>
+      <div class="card-title">改正民法施行――「共同親権」が4月1日より選択可能に</div>
+      <div class="card-desc">離婚後の親権制度を見直す改正民法が4月1日に施行され、離婚後の「共同親権」が日本で初めて選択できるようになった。また養育費を離婚前に取り決めなくても請求できる新制度も導入され、子どもの権利保護を強化する内容となっている。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 Nippon.com</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card" href="https://www.belongingjapan.com/how-to-guide/finance/changes-in-japan-2026/" target="_blank" rel="noopener" data-category="society">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-society">社会</span><span class="card-num">#08</span></div>
+      <div class="card-title">私立高校授業料の実質無償化が全国で4月スタート――所得制限を撤廃</div>
+      <div class="card-desc">4月1日より、所得制限を撤廃した形で私立高校の授業料実質無償化が全国一律で導入された。公立小学校の給食費無償化や公立中の35人学級の段階的開始も同時にスタートし、子育て支援の拡充が進んでいる。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 Belonging Japan</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card" href="https://japancheapo.com/events/april/" target="_blank" rel="noopener" data-category="society">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-society">社会</span><span class="card-num">#09</span></div>
+      <div class="card-title">桜の見頃シーズン到来――全国の名所で満開報告が相次ぐ</div>
+      <div class="card-desc">4月上旬、全国各地で桜の満開が相次いで報告されている。城と桜が共演する名所などライブ中継も注目を集めており、インバウンド観光客の訪日増加とも相まって、各地の観光スポットは多くの人出でにぎわっている。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 Japan Cheapo / Japan Today</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card" href="https://news.web.nhk/newsweb/genre/politics" target="_blank" rel="noopener" data-category="world">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-world">国際</span><span class="card-num">#10</span></div>
+      <div class="card-title">イラン情勢緊迫化――トランプ大統領が「48時間」警告、日本も動向を注視</div>
+      <div class="card-desc">イランが新型防空システムを導入したと報じられる中、トランプ米大統領がイランに対し「あと48時間」と警告する発言をしたことが日本でも大きく報道された。中東情勢の緊迫化は原油価格に影響しており、エネルギー輸入依存度の高い日本経済への波及が懸念されている。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 NHKニュース / 時事ドットコム</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card ai-card" href="https://thehackernews.com/2026/04/claude-code-tleaked-via-npm-packaging.html" target="_blank" rel="noopener" data-category="ai">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-ai">🤖 Claude/AI</span><span class="card-num">#11</span></div>
+      <div class="card-title">Claude Codeのソースコードがnpmパッケージングミスで流出――Anthropicが確認</div>
+      <div class="card-desc">Anthropicは2026年3月31日にClaude Code v2.1.88をnpmにリリースした際、59.8MBのJavaScriptソースマップが誤って同梱され、約512,000行の未難読化TypeScriptコード（約1,900ファイル）が公開状態になった。顧客データや認証情報の漏洩はなかったとAnthropicは説明。流出後、マルウェア配布を目的とした悪意あるリポジトリも確認された。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 The Hacker News</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card ai-card" href="https://www.pymnts.com/acquisitions/2026/anthropic-targets-biotech-growth-with-400-million-coefficient-bio-buy/" target="_blank" rel="noopener" data-category="ai">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-ai">🤖 Claude/AI</span><span class="card-num">#12</span></div>
+      <div class="card-title">Anthropic、AIバイオテック企業Coefficient Bioを約4億ドルで買収</div>
+      <div class="card-desc">AnthropicはAIバイオテックスタートアップのCoefficient Bioを約4億ドルで買収した。同社はAIを活用した創薬計画・臨床規制戦略・新薬候補探索プラットフォームを開発しており、AnthropicはAI技術をバイオ・医薬品分野に本格展開する戦略を加速させる。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 PYMNTS.com</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card ai-card" href="https://www.cnn.com/2026/04/03/tech/anthropic-mythos-ai-cybersecurity" target="_blank" rel="noopener" data-category="ai">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-ai">🤖 Claude/AI</span><span class="card-num">#13</span></div>
+      <div class="card-title">Anthropicの次世代モデル「Claude Mythos」――サイバーセキュリティの「転換点」になる可能性</div>
+      <div class="card-desc">Anthropicが社内でテスト中の新モデル「Claude Mythos」の存在が、内部ファイルの誤公開によって明らかになった。これまでリリースされた中で最も高性能とされ、サイバーセキュリティ分野で「前例のないリスク」をもたらす可能性があるとCNNが報じた。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 CNN Business</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card ai-card" href="https://venturebeat.com/technology/anthropic-cuts-off-the-ability-to-use-claude-subscriptions-with-openclaw-and" target="_blank" rel="noopener" data-category="ai">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-ai">🤖 Claude/AI</span><span class="card-num">#14</span></div>
+      <div class="card-title">AnthropicがClaude Pro/Maxのサードパーティ AIエージェント利用を遮断</div>
+      <div class="card-desc">Anthropicは2026年4月4日より、Claude ProおよびMaxのサブスクリプションをOpenClawなどのサードパーティ製AIエージェントツール内で使用することを全面的に禁止した。ユーザーにはAPI課金への移行を促しており、補償として1ヶ月分のクレジットと最大30%割引バンドルを提供している。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 VentureBeat</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card ai-card" href="https://www.cnbc.com/2026/03/24/anthropic-claude-ai-agent-use-computer-finish-tasks.html" target="_blank" rel="noopener" data-category="ai">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-ai">🤖 Claude/AI</span><span class="card-num">#15</span></div>
+      <div class="card-title">Claude CodeにComputer Use機能搭載――自律エージェント操作が本格化</div>
+      <div class="card-desc">AnthropicはClaude CodeおよびCoworkにComputer Use機能を追加し、ProおよびMaxユーザーはセットアップ不要でClaudeにファイル操作・開発ツール操作・画面クリックを行わせることが可能になった。「Auto Mode」も導入され、スマートフォンからの指示だけでAIエージェントがブラウザ操作やスプレッドシート入力まで完遂できる体制が整った。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 CNBC</span><span class="card-arrow">›</span></div>
   </a>
 
 </div>
