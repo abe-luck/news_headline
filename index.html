@@ -12,135 +12,218 @@
   .header-icon { font-size: 1.4rem; }
   .header-title { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.5px; }
   .header-date { font-size: 0.78rem; color: rgba(255,255,255,0.6); }
-  .categories { display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px; scrollbar-width: none; background: white; border-bottom: 1px solid #e8e8e8; }
+  .section-label { font-size: 0.8rem; font-weight: 700; color: #555; padding: 16px 16px 6px; max-width: 640px; margin: 0 auto; letter-spacing: 0.5px; }
+  .section-label.ai-label { color: #7b1fa2; }
+  .categories { display: flex; gap: 8px; overflow-x: auto; padding: 12px 16px; scrollbar-width: none; background: white; border-bottom: 1px solid #e8e8e8; position: sticky; top: 72px; z-index: 9; }
   .categories::-webkit-scrollbar { display: none; }
-  .cat-btn { flex-shrink: 0; padding: 5px 14px; border-radius: 20px; border: 1.5px solid #ddd; background: white; font-size: 0.78rem; color: #555; cursor: pointer; font-weight: 500; }
+  .cat-btn { flex-shrink: 0; padding: 5px 14px; border-radius: 20px; border: 1.5px solid #ddd; background: white; font-size: 0.78rem; color: #555; cursor: pointer; font-weight: 500; transition: all 0.2s; }
   .cat-btn.active { background: #0f3460; color: white; border-color: #0f3460; }
-  .news-list { padding: 12px 16px; max-width: 640px; margin: 0 auto; }
-  .news-card { background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.15s, box-shadow 0.15s; }
+  .news-list { padding: 4px 16px 12px; max-width: 640px; margin: 0 auto; }
+  .news-card { display: block; text-decoration: none; background: white; border-radius: 16px; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.06); transition: transform 0.15s, box-shadow 0.15s; }
+  .news-card.ai-card { border-left: 3px solid #7b1fa2; }
   .news-card:active { transform: scale(0.98); }
+  .news-card.hidden { display: none; }
   .card-body { padding: 16px; }
   .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
   .category-tag { font-size: 0.68rem; font-weight: 700; padding: 3px 9px; border-radius: 10px; letter-spacing: 0.3px; }
   .tag-economy { background: #fff3e0; color: #e65100; }
   .tag-politics { background: #e8f5e9; color: #2e7d32; }
   .tag-society { background: #e3f2fd; color: #1565c0; }
-  .tag-tech { background: #f3e5f5; color: #7b1fa2; }
+  .tag-tech { background: #f5f0ff; color: #6a0dad; }
   .tag-sports { background: #fce4ec; color: #c62828; }
   .tag-world { background: #e0f7fa; color: #00695c; }
   .tag-other { background: #f5f5f5; color: #616161; }
+  .tag-ai { background: #ede7f6; color: #4a148c; }
   .card-num { font-size: 0.72rem; color: #bbb; font-weight: 600; }
   .card-title { font-size: 0.98rem; font-weight: 700; color: #1a1a2e; line-height: 1.4; margin-bottom: 6px; }
   .card-desc { font-size: 0.83rem; color: #666; line-height: 1.55; }
-  .card-footer { padding: 10px 16px; border-top: 1px solid #f5f5f5; display: flex; align-items: center; gap: 6px; }
+  .card-footer { padding: 10px 16px; border-top: 1px solid #f5f5f5; display: flex; align-items: center; justify-content: space-between; }
   .card-source { font-size: 0.72rem; color: #aaa; }
+  .card-arrow { font-size: 0.8rem; color: #ccc; }
+  .no-results { text-align: center; padding: 40px 16px; color: #aaa; font-size: 0.9rem; display: none; }
   .footer { text-align: center; padding: 24px 16px; color: #aaa; font-size: 0.75rem; }
 </style>
 </head>
 <body>
 <div class="header">
   <div class="header-top"><span class="header-icon">📰</span><span class="header-title">TODAY'S NEWS</span></div>
-  <div class="header-date">2026年4月2日 のニュースダイジェスト</div>
+  <div class="header-date">2026年4月7日 のニュースダイジェスト</div>
 </div>
 <div class="categories">
-  <div class="cat-btn active">すべて</div>
-  <div class="cat-btn">経済</div>
-  <div class="cat-btn">政治</div>
-  <div class="cat-btn">社会</div>
-  <div class="cat-btn">技術</div>
-  <div class="cat-btn">国際</div>
+  <button class="cat-btn active" data-filter="all">すべて</button>
+  <button class="cat-btn" data-filter="economy">経済</button>
+  <button class="cat-btn" data-filter="politics">政治</button>
+  <button class="cat-btn" data-filter="society">社会</button>
+  <button class="cat-btn" data-filter="tech">技術</button>
+  <button class="cat-btn" data-filter="sports">スポーツ</button>
+  <button class="cat-btn" data-filter="world">国際</button>
+  <button class="cat-btn" data-filter="ai">🤖 AI</button>
 </div>
-<div class="news-list">
-  <div class="news-card">
+
+<div class="section-label">📰 今日のニュース</div>
+<div class="news-list" id="newsList">
+
+  <a class="news-card" href="https://www.nikkei.com/article/DGXZQOUB0357T0T00C26A4000000/" target="_blank" rel="noopener" data-category="economy">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#01</span></div>
-      <div class="card-title">日経平均株価が1,276円安、一時1,400円超の下げ幅</div>
-      <div class="card-desc">東京株式市場で日経平均株価が反落し、終値は前日比1,276円（2.38%）安の52,463円。トランプ米大統領の演説を受けてイランとの軍事衝突収束期待が後退し、午後には下げ幅が一時1,400円超に拡大。銀行・製造業など景気敏感株が軒並み売られた。</div>
+      <div class="card-title">長期金利が一時2.425%に上昇、1999年以来約27年ぶりの高水準</div>
+      <div class="card-desc">国内債券市場で新発10年物国債利回りが2.425%に上昇し、1999年2月以来約27年ぶりの高水準を記録。財政悪化懸念と日銀の国債買入れ減額が背景とされている。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.nikkei.com/topics/25021100" target="_blank" rel="noopener" data-category="politics">
     <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#02</span></div>
-      <div class="card-title">フラット35金利が4月2.49%に、現行制度で過去最大の上げ幅</div>
-      <div class="card-desc">住宅金融支援機構のフラット35（35年固定）の4月適用金利が2.49%となり、現行制度における過去最大の上げ幅を記録。日銀の金融政策正常化に伴う長期金利上昇が住宅ローン市場にも波及している。</div>
+      <div class="card-meta"><span class="category-tag tag-politics">政治</span><span class="card-num">#02</span></div>
+      <div class="card-title">赤澤経産相、訪米でラトニック商務長官と会談 対日関税15%引き上げ回避を要請</div>
+      <div class="card-desc">訪米中の赤澤経済産業相はラトニック米商務長官と会談し、トランプ政権が検討している代替関税の10%から15%への引き上げを日本に適用しないよう要請。日米間の通商交渉が本格化している。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.jetro.go.jp/biznews/2026/04/39df18bff4ece351.html" target="_blank" rel="noopener" data-category="world">
     <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#03</span></div>
-      <div class="card-title">財務省：2月の税収5.1%増、企業業績好調が下支え</div>
-      <div class="card-desc">財務省は2月の国の税収が前年同月比5.1%増だったと発表。法人税収の伸びが主因で、企業の堅調な業績が税収増に寄与した。通年での税収増も視野に入ってきた。</div>
+      <div class="card-meta"><span class="category-tag tag-world">国際</span><span class="card-num">#03</span></div>
+      <div class="card-title">中東情勢悪化でホルムズ海峡の通航が停止状態、日本の省庁が相談窓口を設置</div>
+      <div class="card-desc">イスラエル・米国によるイラン攻撃を受けた中東情勢の悪化により、石油・天然ガスの輸送路であるホルムズ海峡で船舶への攻撃が発生し通航が停止状態。日本の複数省庁が特設ページと相談窓口を設置した。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 財務省発表</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 ジェトロ（日本貿易振興機構）</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://news.web.nhk.or.jp/newsweb" target="_blank" rel="noopener" data-category="world">
     <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-politics">政治</span><span class="card-num">#04</span></div>
-      <div class="card-title">自転車の交通反則切符制度が4月1日から本格運用開始</div>
-      <div class="card-desc">自転車の信号無視や一時不停止などを対象とした交通反則切符（青切符）制度が4月1日から施行された。林官房長官は「安全運転に努めてほしい」と国民に呼びかけた。</div>
+      <div class="card-meta"><span class="category-tag tag-world">国際</span><span class="card-num">#04</span></div>
+      <div class="card-title">イランが米国の停戦提案を拒否、トランプ大統領はエネルギー施設攻撃の延期を検討</div>
+      <div class="card-desc">イランが米国からの停戦提案を拒否したと報じられた。一方でトランプ大統領はエネルギー施設への攻撃を延期する可能性があり、停戦条件の協議が続いているとの報道もある。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 NHKニュース</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 NHKニュース</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.policynews.jp/schedule/2026/4.html" target="_blank" rel="noopener" data-category="politics">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-politics">政治</span><span class="card-num">#05</span></div>
-      <div class="card-title">自民党、国旗損壊罪創設を検討―PTが初会合</div>
-      <div class="card-desc">自民党の岩屋毅外相は、国旗損壊罪創設を求める党プロジェクトチームの初会合で国旗尊重の必要性を強調しつつも、法整備には慎重姿勢を示した。野党からは表現の自由との兼ね合いを問題視する声も上がっている。</div>
+      <div class="card-title">2026年度本予算が4月11日に自然成立へ、たばこ税・法人税引き上げなど新制度が始動</div>
+      <div class="card-desc">2026年度（令和8年度）一般会計予算が4月11日に自然成立する見通し。4月1日からはたばこ税・法人税の引き上げや「130万円の壁」の年収要件緩和など複数の新制度が既にスタートしている。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 産経新聞</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 KSI政策ニュース</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.fukushima-tv.co.jp/localnews/2026/04/02/" target="_blank" rel="noopener" data-category="society">
     <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-politics">政治</span><span class="card-num">#06</span></div>
-      <div class="card-title">大阪都構想住民投票「府全域」案が波紋、維新市議団が反発</div>
-      <div class="card-desc">大阪都構想の住民投票について府全域を対象とする案が自維間で浮上し、維新市議団が反発。住民投票の実施範囲をめぐる攻防が激化している。</div>
+      <div class="card-meta"><span class="category-tag tag-society">社会</span><span class="card-num">#06</span></div>
+      <div class="card-title">福島第一原発の処理水放出、2026年度初回（通算19回目）が4月2日に開始</div>
+      <div class="card-desc">東京電力は4月2日、福島第一原発における処理水（ALPS処理水）の海洋放出を開始した。2026年度に入り初めての放出で、通算では19回目となる。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 朝日新聞</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 福島テレビ</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.jiji.com/jc/archives?g=soc_archive_0" target="_blank" rel="noopener" data-category="society">
     <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-world">国際</span><span class="card-num">#07</span></div>
-      <div class="card-title">トランプ関税1年、台湾の対米輸出が8割増―半導体強みに日韓を抜く</div>
-      <div class="card-desc">トランプ政権の関税措置から1年、台湾の対米輸出が約8割増加。半導体産業の競争力を背景に日韓を上回る伸びを示した。関税の影響は各国・地域によって明暗が分かれている。</div>
+      <div class="card-meta"><span class="category-tag tag-society">社会</span><span class="card-num">#07</span></div>
+      <div class="card-title">出入国在留管理庁が「企業内転勤」在留資格の運用を厳格化、外国人の転勤審査を見直し</div>
+      <div class="card-desc">出入国在留管理庁は4月から、民間企業の外国人職員が日本に転勤する際に必要な在留資格「企業内転勤」の審査運用を見直し、厳正化する方針を開始した。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 時事ドットコム</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://www.nikkei.com/" target="_blank" rel="noopener" data-category="economy">
     <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-world">国際</span><span class="card-num">#08</span></div>
-      <div class="card-title">イランがフィリピン船舶のホルムズ海峡通過を許可、両国外相が電話協議</div>
-      <div class="card-desc">イランがフィリピン船舶のホルムズ海峡通過を許可し、両国外相が電話協議を実施。中東の緊張が続く中、外交的解決に向けた動きとして注目を集めている。</div>
+      <div class="card-meta"><span class="category-tag tag-economy">経済</span><span class="card-num">#08</span></div>
+      <div class="card-title">東京株式市場で日経平均が続伸、米関税懸念が一服</div>
+      <div class="card-desc">4月6日の東京株式市場で日経平均株価は続伸した。トランプ政権の関税政策を巡る過度な懸念が和らいだほか、円相場の落ち着きも支援材料となった。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 NHKニュース</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 日本経済新聞</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://jp.headtopics.com/news/335103862720055879175-81860680" target="_blank" rel="noopener" data-category="sports">
     <div class="card-body">
-      <div class="card-meta"><span class="category-tag tag-society">社会</span><span class="card-num">#09</span></div>
-      <div class="card-title">はま寿司宮崎店で集団食中毒、21人がノロウイルス感染</div>
-      <div class="card-desc">はま寿司の宮崎県内の店舗で集団食中毒が発生し、21人がノロウイルスへの感染が確認された。保健所が原因の詳細を調査中で、当該店舗は営業を停止している。</div>
+      <div class="card-meta"><span class="category-tag tag-sports">スポーツ</span><span class="card-num">#09</span></div>
+      <div class="card-title">柔道・素根輝が左膝手術から復活、全日本選抜体重別で7年ぶり4度目の優勝</div>
+      <div class="card-desc">2021年東京五輪金メダリストの素根輝が、左膝の手術というハンディを乗り越え、全日本選抜体重別選手権女子78キロ超級で7年ぶり4度目の優勝を果たした。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 時事ドットコム</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 産経新聞</span><span class="card-arrow">›</span></div>
+  </a>
 
-  <div class="news-card">
+  <a class="news-card" href="https://sports.yahoo.co.jp/list/news/npb" target="_blank" rel="noopener" data-category="sports">
     <div class="card-body">
       <div class="card-meta"><span class="category-tag tag-sports">スポーツ</span><span class="card-num">#10</span></div>
-      <div class="card-title">サッカー日本代表がイングランドに快勝、W杯北中米大会へ弾み</div>
-      <div class="card-desc">サッカー日本代表が3月31日にロンドンで行われたイングランドとのテストマッチに快勝。この夏に開催されるFIFAワールドカップ北中米大会に向けて大きな弾みをつける結果となった。</div>
+      <div class="card-title">大谷翔平が2試合連続マルチ安打、村上宗隆は日米通算250号本塁打を達成</div>
+      <div class="card-desc">MLBでドジャースの大谷翔平が2試合連続マルチ安打を記録し好調を維持。一方、メッツの村上宗隆は日米通算250号本塁打の大台に到達し、日本人選手の活躍が続いている。</div>
     </div>
-    <div class="card-footer"><span class="card-source">🔗 スポーツニュース各社</span></div>
-  </div>
+    <div class="card-footer"><span class="card-source">🔗 スポーツナビ（Yahoo! JAPAN）</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <div class="section-label ai-label" style="padding-left: 0; padding-right: 0;">🤖 Claude Code / Anthropic / AI 最新ニュース</div>
+
+  <a class="news-card ai-card" href="https://www.cnbc.com/2026/03/31/anthropic-leak-claude-code-internal-source.html" target="_blank" rel="noopener" data-category="ai">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-ai">🤖 Claude/AI</span><span class="card-num">#11</span></div>
+      <div class="card-title">Anthropic、Claude Codeのソースコードを誤って公開 — 51.2万行のTypeScriptが流出</div>
+      <div class="card-desc">AnthropicはClaude Codeの内部ソースコード約512,000行をnpmパッケージ経由で誤って公開した。59.8MBのJavaScriptソースマップファイルがCloudflare R2バケットに公開状態で含まれており、数時間以内に広く拡散した。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 CNBC</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card ai-card" href="https://www.cnbc.com/2026/03/24/anthropic-claude-ai-agent-use-computer-finish-tasks.html" target="_blank" rel="noopener" data-category="ai">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-ai">🤖 Claude/AI</span><span class="card-num">#12</span></div>
+      <div class="card-title">Anthropic、Claude Codeにコンピューター操作機能を追加 — AIエージェントがPC画面を直接操作</div>
+      <div class="card-desc">AnthropicはProおよびMaxユーザー向けにClaude Codeへのコンピューターユース機能を追加。ClaudeがファイルのオープンやDevツールの実行、クリック・ナビゲーションなどをセットアップ不要で行えるようになった。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 CNBC</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card ai-card" href="https://fortune.com/2026/03/26/anthropic-says-testing-mythos-powerful-new-ai-model-after-data-leak-reveals-its-existence-step-change-in-capabilities/" target="_blank" rel="noopener" data-category="ai">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-ai">🤖 Claude/AI</span><span class="card-num">#13</span></div>
+      <div class="card-title">Anthropic、新モデル「Claude Mythos」の開発を確認 — 「これまでで最も強力なモデル」</div>
+      <div class="card-desc">データリークにより存在が発覚したAnthropicの新モデル「Claude Mythos」は、AI性能における「段階的な飛躍」と評され、現行モデルを大幅に上回る能力を持つとされる。同社は前例のないサイバーセキュリティリスクをもたらすとも警告している。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 Fortune</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card ai-card" href="https://techcrunch.com/2026/04/04/anthropic-says-claude-code-subscribers-will-need-to-pay-extra-for-openclaw-support/" target="_blank" rel="noopener" data-category="ai">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-ai">🤖 Claude/AI</span><span class="card-num">#14</span></div>
+      <div class="card-title">Anthropic、Claude Codeのサードパーティツール利用を有料化 — OpenClaw等は別途課金へ</div>
+      <div class="card-desc">AnthropicはClaude Codeサブスクライバーに対し、OpenClawなどの外部ツール利用をサブスクリプション枠内から除外し、従量課金制への移行を発表した。これにより外部ツールとの連携コストが増加する。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 TechCrunch</span><span class="card-arrow">›</span></div>
+  </a>
+
+  <a class="news-card ai-card" href="https://aiagentstore.ai/ai-agent-news/2026-april" target="_blank" rel="noopener" data-category="ai">
+    <div class="card-body">
+      <div class="card-meta"><span class="category-tag tag-ai">🤖 Claude/AI</span><span class="card-num">#15</span></div>
+      <div class="card-title">Claude Codeが月次収益10億ドル規模に到達 — リリースから6か月でAIコーディングツール市場をリード</div>
+      <div class="card-desc">Anthropicのコーディングエージェント「Claude Code」はリリースから6か月以内に年換算10億ドルの収益ランレートに到達した。Anthropic全体の年換算収益も約190億ドルに迫り、OpenAIに次ぐ規模に成長している。</div>
+    </div>
+    <div class="card-footer"><span class="card-source">🔗 AI Agent Store</span><span class="card-arrow">›</span></div>
+  </a>
+
 </div>
-<div class="footer">🤖 Claudeにより自動生成 | 2026-04-02</div>
+<div class="no-results" id="noResults">該当するカテゴリーのニュースはありません</div>
+<div class="footer">🤖 Claudeにより自動生成 | 2026-04-07</div>
+<script>
+  const buttons = document.querySelectorAll('.cat-btn');
+  const cards = document.querySelectorAll('.news-card');
+  const noResults = document.getElementById('noResults');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      let visible = 0;
+      cards.forEach(card => {
+        if (filter === 'all' || card.dataset.category === filter) {
+          card.classList.remove('hidden');
+          visible++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+      noResults.style.display = visible === 0 ? 'block' : 'none';
+    });
+  });
+</script>
 </body>
 </html>
